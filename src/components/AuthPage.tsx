@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +9,15 @@ import { Shield, Heart, Brain } from "lucide-react";
 
 const AuthPage = () => {
   const [activeTab, setActiveTab] = useState("login");
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate("/chat");
+  };
+
+  const handleRegister = () => {
+    navigate("/chat");
+  };
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -68,7 +78,10 @@ const AuthPage = () => {
                     className="rounded-xl border-border/50 bg-input focus:ring-primary"
                   />
                 </div>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium">
+                <Button 
+                  onClick={handleLogin}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium"
+                >
                   Login
                 </Button>
                 <div className="text-center">
@@ -115,7 +128,10 @@ const AuthPage = () => {
                     className="rounded-xl border-border/50 bg-input focus:ring-primary"
                   />
                 </div>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium">
+                <Button 
+                  onClick={handleRegister}
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium"
+                >
                   Register
                 </Button>
               </TabsContent>
