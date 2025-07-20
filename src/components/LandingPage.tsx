@@ -25,32 +25,27 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background bg-vignette-primary relative overflow-hidden animate-fade-in">
-      {/* Animated background decorations */}
-      <div className="absolute inset-0 bg-gradient-hero opacity-5"></div>
-      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-secondary opacity-10 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-accent opacity-8 rounded-full blur-2xl animate-float" style={{animationDelay: '1s'}}></div>
-      
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="relative z-10 border-b border-border/50 bg-card/60 backdrop-blur-lg animate-slide-in-up">
+      <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 animate-slide-in-left">
-              <div className="h-8 w-8 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
+            <div className="flex items-center space-x-2">
+              <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
                 <Stethoscope className="h-5 w-5 text-primary-foreground" />
               </div>
               <span className="text-xl font-semibold text-foreground">SympTrack</span>
             </div>
-            <nav className="flex items-center space-x-4 animate-slide-in-right">
+            <nav className="flex items-center space-x-4">
               <Button 
                 variant="ghost" 
-                className="text-foreground hover:text-primary transition-all duration-300 hover:scale-105"
+                className="text-foreground hover:text-primary"
                 onClick={() => navigate('/auth')}
               >
                 Login
               </Button>
               <Button 
-                className="bg-gradient-primary hover:shadow-glow text-primary-foreground rounded-2xl transition-all duration-300 hover:scale-105"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl"
                 onClick={() => navigate('/auth')}
               >
                 Register
@@ -61,16 +56,16 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <main className="relative z-10 container mx-auto px-6">
-        <div className="py-20 text-center animate-scale-in" style={{animationDelay: '0.3s'}}>
-          <h1 className="text-5xl font-bold text-foreground mb-6 leading-tight bg-gradient-hero bg-clip-text text-transparent">
+      <main className="container mx-auto px-6">
+        <div className="py-20 text-center">
+          <h1 className="text-5xl font-bold text-foreground mb-6 leading-tight">
             AI-Powered Symptom Tracking
           </h1>
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
             An intelligent assistant that takes your health seriously
           </p>
           <Button 
-            className="bg-gradient-hero hover:shadow-float text-primary-foreground px-8 py-6 text-lg rounded-2xl font-medium shadow-elegant transition-all duration-300 hover:scale-105 animate-glow-pulse"
+            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground px-8 py-6 text-lg rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-200"
             onClick={() => navigate('/auth')}
           >
             Get Started
@@ -82,10 +77,10 @@ const LandingPage = () => {
         <div className="py-20">
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className={`border-border/50 bg-card/80 backdrop-blur-lg rounded-2xl shadow-card hover:shadow-float transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-vignette-secondary`} style={{animationDelay: `${0.5 + index * 0.2}s`}}>
+              <Card key={index} className="border-border/50 bg-card/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-8 text-center">
                   <div className="flex justify-center mb-6">
-                    <div className="p-4 bg-gradient-secondary rounded-2xl shadow-glow animate-float" style={{animationDelay: `${index * 0.5}s`}}>
+                    <div className="p-4 bg-secondary/50 rounded-2xl">
                       {feature.icon}
                     </div>
                   </div>

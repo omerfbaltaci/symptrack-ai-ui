@@ -52,24 +52,19 @@ const SummaryPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background bg-vignette-primary relative overflow-hidden animate-fade-in">
-      {/* Background decorations */}
-      <div className="absolute inset-0 bg-gradient-hero opacity-5"></div>
-      <div className="absolute top-0 left-1/4 w-1/3 h-1/3 bg-gradient-secondary opacity-10 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-0 right-1/4 w-1/4 h-1/4 bg-gradient-accent opacity-8 rounded-full blur-2xl animate-float" style={{animationDelay: '1s'}}></div>
-      
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-card/70 backdrop-blur-lg border-b border-border/50 relative z-10 animate-slide-in-up">
+      <div className="bg-card/50 border-b border-border/50">
         <div className="container mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
-            <div className="animate-slide-in-left">
-              <h1 className="text-3xl font-bold text-foreground mb-2 bg-gradient-hero bg-clip-text text-transparent">Today's Health Summary</h1>
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">Today's Health Summary</h1>
               <div className="flex items-center text-muted-foreground">
-                <Calendar className="mr-2 h-4 w-4 text-primary animate-glow-pulse" />
+                <Calendar className="mr-2 h-4 w-4" />
                 <span>{today}</span>
               </div>
             </div>
-            <div className="text-right animate-slide-in-right">
+            <div className="text-right">
               <p className="text-sm text-muted-foreground">Last updated</p>
               <p className="font-medium text-foreground">{new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p>
             </div>
@@ -78,18 +73,18 @@ const SummaryPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-6 py-12 relative z-10">
+      <div className="container mx-auto px-6 py-12">
         <div className="grid gap-8 max-w-4xl mx-auto">
           
           {/* Risk Level Card */}
-          <Card className={`${riskColors.bg} border-2 ${riskColors.border} rounded-2xl shadow-float hover:shadow-elegant transition-all duration-500 bg-vignette-secondary backdrop-blur-lg animate-fade-in hover:scale-105`} style={{animationDelay: '0.2s'}}>
+          <Card className={`${riskColors.bg} border-2 ${riskColors.border} rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300`}>
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-xl font-semibold text-foreground flex items-center">
-                  <TrendingDown className={`mr-3 h-6 w-6 ${riskColors.icon} animate-glow-pulse`} />
+                  <TrendingDown className={`mr-3 h-6 w-6 ${riskColors.icon}`} />
                   Risk Level Assessment
                 </CardTitle>
-                <Badge className={`${riskColors.bg} ${riskColors.text} border ${riskColors.border} px-4 py-2 text-sm font-medium rounded-xl shadow-glow`}>
+                <Badge className={`${riskColors.bg} ${riskColors.text} border ${riskColors.border} px-4 py-2 text-sm font-medium rounded-xl`}>
                   {summaryData.riskLevel} Risk
                 </Badge>
               </div>
@@ -103,15 +98,15 @@ const SummaryPage = () => {
           </Card>
 
           {/* AI Summary Card */}
-          <Card className="bg-vignette-primary backdrop-blur-lg border border-border/50 rounded-2xl shadow-float hover:shadow-elegant transition-all duration-500 animate-fade-in hover:scale-105" style={{animationDelay: '0.4s'}}>
+          <Card className="bg-gradient-to-br from-primary/5 to-secondary/10 border border-border/50 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-semibold text-foreground flex items-center">
-                <AlertTriangle className="mr-3 h-6 w-6 text-primary animate-glow-pulse" />
+                <AlertTriangle className="mr-3 h-6 w-6 text-primary" />
                 AI Analysis Summary
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-card/80 backdrop-blur-sm rounded-xl p-6 border border-border/30 bg-gradient-primary opacity-90">
+              <div className="bg-card/60 rounded-xl p-6 border border-border/30">
                 <p className="text-foreground leading-relaxed">
                   {summaryData.aiSummary}
                 </p>
@@ -120,26 +115,26 @@ const SummaryPage = () => {
           </Card>
 
           {/* Suggestion Card */}
-          <Card className="bg-vignette-accent backdrop-blur-lg border border-border/50 rounded-2xl shadow-float hover:shadow-elegant transition-all duration-500 animate-fade-in hover:scale-105" style={{animationDelay: '0.6s'}}>
+          <Card className="bg-gradient-to-br from-secondary/10 to-accent/5 border border-border/50 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
             <CardHeader className="pb-4">
               <CardTitle className="text-xl font-semibold text-foreground flex items-center">
-                <Stethoscope className="mr-3 h-6 w-6 text-primary animate-glow-pulse" />
+                <Stethoscope className="mr-3 h-6 w-6 text-primary" />
                 Recommendations
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="bg-card/80 backdrop-blur-sm rounded-xl p-6 border border-border/30">
+              <div className="bg-card/60 rounded-xl p-6 border border-border/30">
                 <p className="text-foreground leading-relaxed mb-4">
                   {summaryData.suggestion}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="bg-gradient-secondary text-secondary-foreground rounded-lg px-3 py-1 shadow-glow transition-all duration-300 hover:scale-110">
+                  <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground rounded-lg px-3 py-1">
                     Hydration
                   </Badge>
-                  <Badge variant="secondary" className="bg-gradient-accent text-accent-foreground rounded-lg px-3 py-1 shadow-glow transition-all duration-300 hover:scale-110">
+                  <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground rounded-lg px-3 py-1">
                     Rest
                   </Badge>
-                  <Badge variant="secondary" className="bg-gradient-primary text-primary-foreground rounded-lg px-3 py-1 shadow-glow transition-all duration-300 hover:scale-110">
+                  <Badge variant="secondary" className="bg-secondary/50 text-secondary-foreground rounded-lg px-3 py-1">
                     Stress Management
                   </Badge>
                 </div>
@@ -148,11 +143,11 @@ const SummaryPage = () => {
           </Card>
 
           {/* Action Buttons */}
-          <div className="flex justify-center space-x-4 pt-8 animate-fade-in" style={{animationDelay: '0.8s'}}>
-            <button className="bg-gradient-primary hover:shadow-float text-primary-foreground px-8 py-3 rounded-2xl font-medium shadow-elegant transition-all duration-300 hover:scale-105 animate-glow-pulse">
+          <div className="flex justify-center space-x-4 pt-8">
+            <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-2xl font-medium shadow-md hover:shadow-lg transition-all duration-200">
               Update Symptoms
             </button>
-            <button className="bg-card/80 backdrop-blur-sm hover:bg-gradient-secondary hover:text-secondary-foreground text-foreground border border-border/50 px-8 py-3 rounded-2xl font-medium shadow-card hover:shadow-float transition-all duration-300 hover:scale-105">
+            <button className="bg-card hover:bg-card/80 text-foreground border border-border/50 px-8 py-3 rounded-2xl font-medium shadow-md hover:shadow-lg transition-all duration-200">
               View History
             </button>
           </div>
