@@ -8,45 +8,70 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* SympTrack Color Palette */
-    --background: 46 33% 94%; /* #EFEEEC */
-    --foreground: 220 13% 18%;
+    /* Modern SympTrack Color Palette */
+    --background: 242 245 250; /* Modern light blue-gray */
+    --foreground: 15 23 42;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
 
+    /* Enhanced primary colors with glow variants */
     --primary: 197 68% 57%; /* #42ACE0 */
-    --primary-foreground: 0 0% 100%;
+    --primary-glow: 203 89% 70%; /* Lighter, more vibrant */
+    --primary-foreground: 255 255 255;
 
-    --secondary: 277 17% 85%; /* #DAD2DF */
-    --secondary-foreground: 220 13% 18%;
+    /* More vibrant secondary colors */
+    --secondary: 262 83% 58%; /* Deep purple */
+    --secondary-glow: 270 95% 75%; /* Bright purple glow */
+    --secondary-foreground: 255 255 255;
 
-    --muted: 46 33% 94%;
-    --muted-foreground: 220 9% 46%;
+    /* Accent colors for highlights */
+    --accent: 142 76% 36%; /* Green accent */
+    --accent-glow: 142 69% 58%; /* Bright green glow */
+    --accent-foreground: 255 255 255;
 
-    --accent: 277 17% 85%; /* #DAD2DF */
-    --accent-foreground: 220 13% 18%;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 255 255 255;
 
-    --border: 220 13% 91%;
-    --input: 0 0% 100%;
+    --border: 226 232 240;
+    --input: 255 255 255;
     --ring: 197 68% 57%;
 
-    /* Custom gradient colors */
-    --primary-gradient-start: 197 68% 57%;
-    --primary-gradient-end: 197 68% 47%;
+    /* Design system gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-glow)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 50%, hsl(var(--accent)) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
     
-    /* Risk level colors */
-    --risk-low: 120 60% 50%;
-    --risk-medium: 45 100% 60%;
+    /* Vignette effects */
+    --vignette-primary: radial-gradient(circle at center, transparent 20%, hsl(var(--primary) / 0.08) 70%, hsl(var(--primary) / 0.15) 100%);
+    --vignette-secondary: radial-gradient(circle at center, transparent 30%, hsl(var(--secondary) / 0.06) 80%, hsl(var(--secondary) / 0.12) 100%);
+    --vignette-accent: radial-gradient(circle at center, transparent 25%, hsl(var(--accent) / 0.05) 75%, hsl(var(--accent) / 0.1) 100%);
+    
+    /* Enhanced shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+    --shadow-card: 0 4px 20px -2px hsl(var(--foreground) / 0.08);
+    --shadow-float: 0 20px 40px -12px hsl(var(--foreground) / 0.15);
+    
+    /* Animation easing */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-slide: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* Risk level colors - more vibrant */
+    --risk-low: 142 76% 36%;
+    --risk-medium: 38 92% 50%;
     --risk-high: 0 84% 60%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 

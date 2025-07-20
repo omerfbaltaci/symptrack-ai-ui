@@ -67,17 +67,21 @@ const SymptomChat = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background bg-vignette-primary flex relative overflow-hidden animate-fade-in">
+      {/* Background decorations */}
+      <div className="absolute inset-0 bg-gradient-subtle opacity-30"></div>
+      <div className="absolute top-0 right-1/4 w-1/4 h-1/4 bg-gradient-accent opacity-10 rounded-full blur-2xl animate-float"></div>
+      
       {/* Left Panel - Past Entries */}
-      <div className="w-80 bg-card/50 border-r border-border/50 p-6">
+      <div className="w-80 bg-card/70 backdrop-blur-lg border-r border-border/50 p-6 relative z-10 animate-slide-in-left">
         <h2 className="text-lg font-semibold text-foreground mb-6 flex items-center">
-          <Calendar className="mr-2 h-5 w-5 text-primary" />
+          <Calendar className="mr-2 h-5 w-5 text-primary animate-glow-pulse" />
           Past Entries
         </h2>
         <ScrollArea className="h-[calc(100vh-120px)]">
           <div className="space-y-3">
-            {pastEntries.map((entry) => (
-              <Card key={entry.id} className="cursor-pointer hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border-border/50 rounded-2xl">
+            {pastEntries.map((entry, index) => (
+              <Card key={entry.id} className={`cursor-pointer hover:shadow-float transition-all duration-300 hover:-translate-y-1 border-border/50 rounded-2xl bg-card/80 backdrop-blur-sm bg-vignette-secondary animate-fade-in hover:scale-105`} style={{animationDelay: `${index * 0.1}s`}}>
                 <CardContent className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <span className="text-sm font-medium text-foreground">{entry.date}</span>
@@ -94,28 +98,28 @@ const SymptomChat = () => {
       </div>
 
       {/* Right Panel - Chat Interface */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col relative z-10 animate-slide-in-right">
         {/* Header */}
-        <div className="bg-card/50 border-b border-border/50 p-6">
+        <div className="bg-card/70 backdrop-blur-lg border-b border-border/50 p-6 animate-slide-in-up">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold text-foreground">{today}</h1>
+            <h1 className="text-xl font-semibold text-foreground bg-gradient-hero bg-clip-text text-transparent">{today}</h1>
             <div className="flex items-center space-x-2 text-muted-foreground">
-              <Bot className="h-5 w-5 text-primary" />
+              <Bot className="h-5 w-5 text-primary animate-glow-pulse" />
               <span className="text-sm">AI Assistant Active</span>
             </div>
           </div>
         </div>
 
         {/* Chat Messages */}
-        <ScrollArea className="flex-1 p-6">
+        <ScrollArea className="flex-1 p-6 bg-vignette-accent">
           <div className="space-y-4 max-w-4xl mx-auto">
-            {conversation.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
+            {conversation.map((msg, index) => (
+              <div key={msg.id} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"} animate-fade-in`} style={{animationDelay: `${index * 0.2}s`}}>
                 <div className={`flex items-start space-x-3 max-w-2xl ${msg.type === "user" ? "flex-row-reverse space-x-reverse" : ""}`}>
-                  <div className={`p-2 rounded-2xl ${msg.type === "user" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}>
+                  <div className={`p-2 rounded-2xl shadow-glow ${msg.type === "user" ? "bg-gradient-primary text-primary-foreground" : "bg-gradient-secondary text-secondary-foreground"}`}>
                     {msg.type === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                   </div>
-                  <div className={`p-4 rounded-2xl shadow-sm ${msg.type === "user" ? "bg-primary text-primary-foreground ml-auto" : "bg-card border border-border/50"}`}>
+                  <div className={`p-4 rounded-2xl shadow-card backdrop-blur-sm transition-all duration-300 hover:scale-105 ${msg.type === "user" ? "bg-gradient-primary text-primary-foreground ml-auto" : "bg-card/80 border border-border/50"}`}>
                     <p className={`text-sm leading-relaxed ${msg.type === "user" ? "text-primary-foreground" : "text-foreground"}`}>
                       {msg.message}
                     </p>
@@ -127,18 +131,18 @@ const SymptomChat = () => {
         </ScrollArea>
 
         {/* Input Area */}
-        <div className="bg-card/50 border-t border-border/50 p-6">
+        <div className="bg-card/70 backdrop-blur-lg border-t border-border/50 p-6 animate-slide-in-up" style={{animationDelay: '0.5s'}}>
           <div className="max-w-4xl mx-auto">
             <div className="flex space-x-4">
               <Input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Describe your symptoms..."
-                className="flex-1 rounded-2xl border-border/50 bg-input focus:ring-primary"
+                className="flex-1 rounded-2xl border-border/50 bg-input/80 backdrop-blur-sm focus:ring-primary transition-all duration-300 focus:scale-105"
                 onKeyPress={(e) => e.key === "Enter" && message.trim() && setMessage("")}
               />
               <Button 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl px-6"
+                className="bg-gradient-accent hover:shadow-glow text-accent-foreground rounded-2xl px-6 transition-all duration-300 hover:scale-105"
                 disabled={!message.trim()}
               >
                 <Send className="h-4 w-4" />
