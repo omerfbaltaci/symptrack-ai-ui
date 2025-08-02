@@ -6,16 +6,80 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, Heart, Brain } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const AuthPage = () => {
   const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleLogin = () => {
+  // Login form state
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  // Register form state
+  const [fullName, setFullName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!loginEmail || !loginPassword) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Simple login validation
+    const userData = { email: loginEmail, password: loginPassword, type: 'login' };
+    localStorage.setItem('userSession', JSON.stringify(userData));
+    
+    toast({
+      title: "Success",
+      description: "Logged in successfully!",
+    });
+    
     navigate("/chat");
   };
 
-  const handleRegister = () => {
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName || !registerEmail || !registerPassword || !confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (registerPassword !== confirmPassword) {
+      toast({
+        title: "Error",
+        description: "Passwords do not match",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Store user session
+    const userData = { 
+      fullName, 
+      email: registerEmail, 
+      password: registerPassword, 
+      type: 'register' 
+    };
+    localStorage.setItem('userSession', JSON.stringify(userData));
+    
+    toast({
+      title: "Success",
+      description: "Account created successfully!",
+    });
+    
     navigate("/chat");
   };
 
@@ -60,30 +124,38 @@ const AuthPage = () => {
               </TabsList>
 
               <TabsContent value="login" className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email" 
-                    type="email" 
-                    placeholder="Enter your email"
-                    className="rounded-xl border-border/50 bg-input focus:ring-primary"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input 
-                    id="password" 
-                    type="password" 
-                    placeholder="Enter your password"
-                    className="rounded-xl border-border/50 bg-input focus:ring-primary"
-                  />
-                </div>
-                <Button 
-                  onClick={handleLogin}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium"
-                >
-                  Login
-                </Button>
+                <form onSubmit={handleLogin} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="rounded-xl border-border/50 bg-input focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      className="rounded-xl border-border/50 bg-input focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  <Button 
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium"
+                  >
+                    Login
+                  </Button>
+                </form>
                 <div className="text-center">
                   <Button variant="link" className="text-muted-foreground hover:text-primary">
                     Forgot your password?
@@ -92,48 +164,62 @@ const AuthPage = () => {
               </TabsContent>
 
               <TabsContent value="register" className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
-                  <Input 
-                    id="fullName" 
-                    type="text" 
-                    placeholder="Enter your full name"
-                    className="rounded-xl border-border/50 bg-input focus:ring-primary"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="registerEmail">Email</Label>
-                  <Input 
-                    id="registerEmail" 
-                    type="email" 
-                    placeholder="Enter your email"
-                    className="rounded-xl border-border/50 bg-input focus:ring-primary"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="registerPassword">Password</Label>
-                  <Input 
-                    id="registerPassword" 
-                    type="password" 
-                    placeholder="Create a password"
-                    className="rounded-xl border-border/50 bg-input focus:ring-primary"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input 
-                    id="confirmPassword" 
-                    type="password" 
-                    placeholder="Confirm your password"
-                    className="rounded-xl border-border/50 bg-input focus:ring-primary"
-                  />
-                </div>
-                <Button 
-                  onClick={handleRegister}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium"
-                >
-                  Register
-                </Button>
+                <form onSubmit={handleRegister} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName">Full Name</Label>
+                    <Input 
+                      id="fullName" 
+                      type="text" 
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="Enter your full name"
+                      className="rounded-xl border-border/50 bg-input focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="registerEmail">Email</Label>
+                    <Input 
+                      id="registerEmail" 
+                      type="email" 
+                      value={registerEmail}
+                      onChange={(e) => setRegisterEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="rounded-xl border-border/50 bg-input focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="registerPassword">Password</Label>
+                    <Input 
+                      id="registerPassword" 
+                      type="password" 
+                      value={registerPassword}
+                      onChange={(e) => setRegisterPassword(e.target.value)}
+                      placeholder="Create a password"
+                      className="rounded-xl border-border/50 bg-input focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input 
+                      id="confirmPassword" 
+                      type="password" 
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm your password"
+                      className="rounded-xl border-border/50 bg-input focus:ring-primary"
+                      required
+                    />
+                  </div>
+                  <Button 
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl py-6 text-base font-medium"
+                  >
+                    Register
+                  </Button>
+                </form>
               </TabsContent>
             </Tabs>
           </CardContent>
