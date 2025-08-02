@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, User, Bot, Calendar } from "lucide-react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ChatEntry {
   id: number;
@@ -37,24 +37,6 @@ const SymptomChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Initialize Gemini AI
-  const genAI = new GoogleGenerativeAI("AIzaSyBxw8QbkKv5pFsZCCGOtKnp6vVrLYOAktU");
-  
-  const systemPrompt = `You are a medical note analyzer assistant. The user is pretending to be a patient and has written their symptoms below. Based on this note:
-
-1. Predict the possible disease.
-2. Label the risk as "High Risk", "Low Risk", or "Neutral".
-3. Suggest which hospital department the patient should visit (if necessary).
-4. Mention possible medications (for general understanding only).
-5. Provide practical suggestions for quick recovery with minimal effort or harm.
-
-Do not respond with excessively long messages.
-Your answer should be medically reasonable, informative, and easy to understand.
-
-IMPORTANT: Start your response with "DISEASE: [disease name]" and "RISK: [risk level]" on separate lines, then continue with your analysis.
-
-Patient note: `;
-
   const sendMessage = async () => {
     if (!message.trim()) return;
 
@@ -66,38 +48,29 @@ Patient note: `;
 
     setConversation(prev => [...prev, userMessage]);
     setIsLoading(true);
+    const currentMessage = message.trim();
     setMessage("");
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const fullPrompt = systemPrompt + message.trim();
-      const result = await model.generateContent(fullPrompt);
-      const response = await result.response;
-      const text = response.text();
+      // Call the Supabase Edge Function
+      const { data, error } = await supabase.functions.invoke('analyze-symptoms', {
+        body: { symptoms: currentMessage }
+      });
 
-      // Parse the response to extract disease and risk
-      const lines = text.split('\n');
-      let disease = "Unknown Condition";
-      let risk: "High Risk" | "Low Risk" | "Neutral" = "Neutral";
-
-      for (const line of lines) {
-        if (line.startsWith("DISEASE:")) {
-          disease = line.replace("DISEASE:", "").trim();
-        } else if (line.startsWith("RISK:")) {
-          const riskText = line.replace("RISK:", "").trim();
-          if (riskText.toLowerCase().includes("high")) risk = "High Risk";
-          else if (riskText.toLowerCase().includes("low")) risk = "Low Risk";
-          else risk = "Neutral";
-        }
+      if (error) {
+        throw error;
       }
 
-      // Remove the DISEASE: and RISK: lines from the display text
-      const cleanedText = text.replace(/^DISEASE:.*\n?/gm, '').replace(/^RISK:.*\n?/gm, '').trim();
+      if (!data || data.error) {
+        throw new Error(data?.error || 'Failed to analyze symptoms');
+      }
+
+      const { disease, risk, analysis } = data;
 
       const botMessage: Message = {
         id: conversation.length + 2,
         type: "bot",
-        message: cleanedText
+        message: analysis
       };
 
       setConversation(prev => [...prev, botMessage]);
@@ -108,7 +81,7 @@ Patient note: `;
         date: "Today",
         disease,
         risk,
-        symptoms: message.trim()
+        symptoms: currentMessage
       };
 
       setPastEntries(prev => [newEntry, ...prev]);
@@ -119,10 +92,17 @@ Patient note: `;
       });
 
     } catch (error) {
-      console.error("Error calling Gemini AI:", error);
+      console.error("Error calling analyze-symptoms function:", error);
+      
+      let errorMessage = "Failed to analyze symptoms. Please try again.";
+      
+      if (error.message?.includes('not configured')) {
+        errorMessage = "Please add your Gemini API key in the project settings to enable AI analysis.";
+      }
+      
       toast({
         title: "Error",
-        description: "Failed to analyze symptoms. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
